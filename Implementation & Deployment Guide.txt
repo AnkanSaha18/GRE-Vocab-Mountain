@@ -1,0 +1,343 @@
+# Step-by-Step Implementation & GitHub Deployment Guide
+
+This guide will walk you through implementing the GRE Vocabulary Trainer and deploying it to GitHub Pages.
+
+## Part 1: Setting Up the Project
+
+### 1. Create a New Repository on GitHub
+
+1. Go to [github.com](https://github.com) and sign in to your account
+2. Click the "+" button in the top-right corner and select "New repository"
+3. Name your repository (e.g., "gre-vocab-trainer")
+4. Add a description (optional)
+5. Choose "Public" visibility
+6. Check "Add a README file"
+7. Click "Create repository"
+
+### 2. Clone the Repository Locally
+
+Open your terminal or command prompt and run:
+
+```bash
+git clone https://github.com/YOUR-USERNAME/gre-vocab-trainer.git
+cd gre-vocab-trainer
+```
+
+Replace `YOUR-USERNAME` with your GitHub username.
+
+### 3. Create Project Files
+
+Create the following files in your project directory:
+
+- `index.html`
+- `styles.css`
+- `app.js`
+- `data.js`
+
+Copy the code from each file artifact into its respective file in your project directory.
+
+### 4. Populate All Word Groups
+
+You'll need to add all words from your 32 groups to the `data.js` file. I've provided a template structure with some groups already populated. You should:
+
+1. Add all remaining groups following the same format
+2. Ensure each word has:
+   - The word itself
+   - Definition
+   - Example sentence
+   - Synonyms
+
+Follow the same format for all entries:
+
+```javascript
+{
+    word: "example",
+    definition: "a clear illustration of a concept",
+    example: "This sentence is an example of proper word usage.",
+    synonyms: "sample, specimen, illustration"
+}
+```
+
+## Part 2: Testing Locally
+
+### 1. Open the Application
+
+Simply open the `index.html` file in your web browser by:
+- Double-clicking the file in your file explorer
+- Or using the "Open File" option in your browser
+
+### 2. Test the Features
+
+Make sure to test all the features:
+- Navigate between word groups using the arrow buttons
+- Use the group selector dropdown to jump to specific groups
+- Mark words as known (green), learning (red), or reset (white) using keyboard shortcuts (G, R, W)
+- Use the S key to hear pronunciation
+- Use the D key to see definitions
+- Test that the progress bar updates correctly
+- Verify that shuffle functionality works for both current group and cumulative groups
+- Check if progress is saved when you refresh the page
+
+### 3. Make Adjustments if Needed
+
+If you notice any issues or want to make improvements:
+1. Edit the relevant files
+2. Save changes
+3. Refresh the browser to see the updates
+
+## Part 3: Deploying to GitHub Pages
+
+### 1. Commit Your Changes
+
+In your terminal, run:
+
+```bash
+git add .
+git commit -m "Initial commit of GRE Vocabulary Trainer"
+```
+
+### 2. Push to GitHub
+
+Push your changes to GitHub:
+
+```bash
+git push origin main
+```
+
+### 3. Enable GitHub Pages
+
+1. Go to your repository on GitHub
+2. Click on "Settings" at the top-right
+3. Scroll down to the "GitHub Pages" section (or click on "Pages" in the sidebar)
+4. Under "Source", select "main" branch
+5. Click "Save"
+6. GitHub will provide a URL where your site is published (usually in the format `https://username.github.io/repository-name/`)
+7. Wait a few minutes for your site to be published
+
+### 4. Access Your Web App
+
+Visit the URL provided by GitHub Pages to see your GRE Vocabulary Trainer in action!
+
+## Using the GRE Vocabulary Trainer
+
+Here's how to use the app effectively:
+
+### Navigation
+- Use the left and right arrows to move between groups
+- Use the dropdown to jump directly to a specific group
+- The progress bar shows your current position in the total word list
+
+### Word Marking
+- Press G on a word to mark it as "Known" (green)
+- Press R on a word to mark it as "Learning" (red) 
+- Press W on a word to reset it to "Unmarked"
+- These keyboard shortcuts work both on the main page and in the definition popup
+
+### Word Interaction
+- Press S to hear the pronunciation of a selected word
+- Press D or click on a word to see its definition, example, and synonyms
+- Arrow keys can be used to navigate between words (up/down)
+
+### Shuffle Features
+- "Shuffle Current Group" randomizes just the words in the current group
+- "Shuffle Groups 1-X" randomizes all words from the first group up to your current group (for cumulative review)# Step-by-Step Implementation & GitHub Deployment Guide
+
+This guide will walk you through implementing the GRE Vocabulary Trainer and deploying it to GitHub Pages.
+
+## Part 1: Setting Up the Project
+
+### 1. Create a New Repository on GitHub
+
+1. Go to [github.com](https://github.com) and sign in to your account
+2. Click the "+" button in the top-right corner and select "New repository"
+3. Name your repository (e.g., "gre-vocab-trainer")
+4. Add a description (optional)
+5. Choose "Public" visibility
+6. Check "Add a README file"
+7. Click "Create repository"
+
+### 2. Clone the Repository Locally
+
+Open your terminal or command prompt and run:
+
+```bash
+git clone https://github.com/YOUR-USERNAME/gre-vocab-trainer.git
+cd gre-vocab-trainer
+```
+
+Replace `YOUR-USERNAME` with your GitHub username.
+
+### 3. Create Project Files
+
+Create the following files in your project directory:
+
+- `index.html`
+- `styles.css`
+- `app.js`
+- `data.js`
+
+Copy the code from each file artifact into its respective file in your project directory.
+
+### 4. Customize the Word Data (Optional)
+
+Edit the `data.js` file to add more words from your word list document. You can:
+
+1. Add more words to existing groups
+2. Create new groups
+3. Modify definitions, examples, and synonyms
+
+Follow the same format as the existing word entries:
+
+```javascript
+{
+    word: "example",
+    definition: "a clear illustration of a concept",
+    example: "This sentence is an example of proper word usage.",
+    synonyms: "sample, specimen, illustration"
+}
+```
+
+## Part 2: Testing Locally
+
+### 1. Open the Application
+
+Simply open the `index.html` file in your web browser by:
+- Double-clicking the file in your file explorer
+- Or using the "Open File" option in your browser
+
+### 2. Test the Features
+
+Make sure to test all the features:
+- Browse words by group
+- Click on words to see definitions
+- Use keyboard shortcuts (G, R, W, S, D)
+- Mark words and check if the stats update
+- Test the shuffle and reset features
+- Check if progress is saved when you refresh the page
+
+### 3. Make Adjustments if Needed
+
+If you notice any issues or want to make improvements:
+1. Edit the relevant files
+2. Save changes
+3. Refresh the browser to see the updates
+
+## Part 3: Deploying to GitHub Pages
+
+### 1. Commit Your Changes
+
+In your terminal, run:
+
+```bash
+git add .
+git commit -m "Initial commit of GRE Vocabulary Trainer"
+```
+
+### 2. Push to GitHub
+
+Push your changes to GitHub:
+
+```bash
+git push origin main
+```
+
+### 3. Enable GitHub Pages
+
+1. Go to your repository on GitHub
+2. Click on "Settings" at the top-right
+3. Scroll down to the "GitHub Pages" section (or click on "Pages" in the sidebar)
+4. Under "Source", select "main" branch
+5. Click "Save"
+6. GitHub will provide a URL where your site is published (usually in the format `https://username.github.io/repository-name/`)
+7. Wait a few minutes for your site to be published
+
+### 4. Access Your Web App
+
+Visit the URL provided by GitHub Pages to see your GRE Vocabulary Trainer in action!
+
+## Part 4: Adding All Your Word Groups
+
+To add all the words from your document:
+
+1. Open `data.js`
+2. For each group in your word document, create a new entry in the `wordData` object:
+
+```javascript
+"Group X": [
+    {
+        word: "word1",
+        definition: "definition of word1",
+        example: "example sentence using word1",
+        synonyms: "synonym1, synonym2, synonym3"
+    },
+    {
+        word: "word2",
+        definition: "definition of word2",
+        example: "example sentence using word2",
+        synonyms: "synonym1, synonym2, synonym3"
+    },
+    // Add more words...
+]
+```
+
+3. Save the file
+4. Commit and push your changes:
+
+```bash
+git add data.js
+git commit -m "Added all word groups"
+git push origin main
+```
+
+5. Wait a few minutes for GitHub Pages to update
+
+## Part 5: Troubleshooting
+
+### Issue: Changes not showing up on GitHub Pages
+
+If your changes are not appearing on your GitHub Pages site:
+1. Make sure you've committed and pushed your changes
+2. Wait a few minutes (GitHub Pages can take up to 10 minutes to update)
+3. Clear your browser cache or try in an incognito/private window
+
+### Issue: Word data not loading
+
+If the word data isn't loading:
+1. Check your browser's developer console for errors (F12 key)
+2. Verify that the `data.js` file is properly formatted
+3. Make sure all the JSON is valid (no missing commas, brackets, etc.)
+
+### Issue: Progress not saving
+
+If your progress isn't saving:
+1. Make sure you're using the same browser and haven't cleared your cookies/local storage
+2. Check if your browser has localStorage enabled
+3. Verify that the app.js code for saving/loading is working correctly
+
+## Part 6: Maintenance and Updates
+
+To update your app in the future:
+
+1. Make changes to your local files
+2. Test the changes locally
+3. Commit and push to GitHub:
+
+```bash
+git add .
+git commit -m "Description of your changes"
+git push origin main
+```
+
+4. GitHub Pages will automatically update with your changes
+
+## Conclusion
+
+You now have a fully functional GRE Vocabulary Trainer web app hosted on GitHub Pages! Your users can access it from any web browser, and their progress will be saved locally on their devices.
+
+This approach is ideal because:
+1. It's completely free to host on GitHub Pages
+2. There's no backend server required
+3. User data stays on their own device
+4. The app works offline once loaded
+
+Enjoy helping users memorize GRE vocabulary with your new web app!
