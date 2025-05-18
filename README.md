@@ -1,3 +1,7 @@
+This whole site is accessable at here: https://ankansaha18.github.io/GRE-Vocab-Mountain/
+
+
+
 # GRE Word Memorizer
 
 A web-based application designed to help students memorize GRE vocabulary efficiently through an interactive flashcard system.

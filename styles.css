@@ -248,7 +248,7 @@ button:hover {
     margin-bottom: 5px;
 }
 
-/* Modal Styles */
+/* Enhanced Modal Styles */
 .modal {
     display: none;
     position: fixed;
@@ -257,57 +257,203 @@ button:hover {
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(3px);
+    transition: all 0.3s ease;
 }
 
 .modal-content {
-    background-color: #fff;
-    margin: 10% auto;
-    padding: 20px;
-    border-radius: 8px;
-    width: 80%;
+    background: linear-gradient(to bottom, #ffffff, #f9f9f9);
+    margin: 8% auto;
+    padding: 30px;
+    border-radius: 12px;
+    width: 85%;
     max-width: 600px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     position: relative;
+    transition: all 0.3s ease;
+    border: 1px solid #eaeaea;
 }
 
 .close {
     position: absolute;
     right: 20px;
     top: 15px;
-    color: #aaa;
-    font-size: 28px;
+    color: #999;
+    font-size: 24px;
     font-weight: bold;
     cursor: pointer;
+    transition: color 0.3s;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    border-radius: 50%;
 }
 
 .close:hover {
     color: #333;
+    background-color: #f0f0f0;
 }
 
 #modalWord {
     color: #2c3e50;
-    margin-bottom: 15px;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 10px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 15px;
+    font-size: 28px;
+    font-weight: 700;
+    text-align: center;
 }
 
 #modalDefinition {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     font-size: 16px;
+    line-height: 1.6;
+    color: #333;
 }
 
 #modalExample {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     font-style: italic;
     color: #555;
-    padding: 10px;
-    background-color: #f9f9f9;
-    border-radius: 4px;
+    padding: 15px;
+    background-color: #f8f8f8;
+    border-radius: 8px;
+    border-left: 4px solid #3498db;
+    line-height: 1.5;
 }
 
 #modalSynonyms {
     color: #666;
+    margin-bottom: 25px;
+    font-size: 15px;
+}
+
+/* Modal Controls Styles */
+.modal-controls {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.modal-btn {
+    width: 50px;
+    height: 50px;
+    border: none;
+    border-radius: 50%;
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.modal-btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.modal-btn.green-btn {
+    background: linear-gradient(to bottom right, #2ecc71, #27ae60);
+}
+
+.modal-btn.red-btn {
+    background: linear-gradient(to bottom right, #e74c3c, #c0392b);
+}
+
+.modal-btn.white-btn {
+    background: linear-gradient(to bottom right, #bdc3c7, #95a5a6);
+}
+
+.modal-btn.speak-btn {
+    background: linear-gradient(to bottom right, #9b59b6, #8e44ad);
+}
+
+/* Touch Controls Styles */
+.touch-controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px;
+    margin: 10px 0;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.touch-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 6px;
+    background-color: #3498db;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 70px;
+    position: relative;
+}
+
+.touch-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.touch-btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.key-hint {
+    font-size: 12px;
+    opacity: 0.8;
+    margin-top: 4px;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.green-btn {
+    background-color: #2ecc71;
+}
+
+.red-btn {
+    background-color: #e74c3c;
+}
+
+.white-btn {
+    background-color: #95a5a6;
+}
+
+.speak-btn {
+    background-color: #9b59b6;
+}
+
+.details-btn {
+    background-color: #f39c12;
+}
+
+.nav-btn {
+    background-color: #34495e;
+    flex: 1;
 }
 
 /* Responsive Styles */
@@ -327,13 +473,38 @@ button:hover {
     }
 
     .modal-content {
-        width: 95%;
-        margin: 30% auto;
+        padding: 20px;
+        margin: 10% auto;
+    }
+
+    #modalWord {
+        font-size: 24px;
+    }
+
+    .modal-btn {
+        width: 45px;
+        height: 45px;
+        font-size: 18px;
     }
 
     .group-stats {
         flex-direction: column;
         align-items: center;
+    }
+
+    .touch-controls {
+        flex-direction: row;
+        gap: 5px;
+    }
+
+    .touch-btn {
+        padding: 8px 10px;
+        font-size: 14px;
+        min-width: 60px;
+    }
+
+    .key-hint {
+        font-size: 10px;
     }
 }
 
@@ -370,12 +541,54 @@ button:hover {
 
     .modal-content {
         width: 90%;
-        margin: 15% auto;
         padding: 15px;
+        margin: 15% auto;
+    }
+
+    #modalWord {
+        font-size: 22px;
+        margin-bottom: 15px;
+    }
+
+    #modalDefinition,
+    #modalExample,
+    #modalSynonyms {
+        font-size: 14px;
+        margin-bottom: 15px;
+    }
+
+    .modal-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
     }
 
     .stat-item {
         width: 90%;
         text-align: center;
+    }
+
+    .touch-controls {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 5px;
+    }
+
+    .touch-btn {
+        padding: 8px;
+        font-size: 12px;
+        min-width: 0;
+    }
+
+    .nav-btn {
+        grid-column: span 3;
+    }
+
+    .prev-btn {
+        order: -1;
+    }
+
+    .next-btn {
+        order: 10;
     }
 }
