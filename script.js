@@ -415,7 +415,7 @@ function showWordDetails(wordObj) {
         updateNoteIndicator(currentWordGroup, currentWordText, newTextarea.value);
     });
 
-    modal.style.display = "block";
+    modal.style.display = "flex";
 }
 
 // Update the note indicator for a word
