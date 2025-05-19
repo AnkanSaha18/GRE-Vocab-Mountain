@@ -7,6 +7,7 @@ let groups = Object.keys(wordData);
 let currentWords = [...wordData[currentGroup]];
 let userProgress = {};
 let inMixedMode = false; // Track if we're in mixed mode
+let userNotes = {}; // Store user notes for words
 
 // DOM elements
 const wordContainer = document.getElementById("wordContainer");
@@ -22,11 +23,25 @@ const closeModal = document.querySelector(".close");
 // Initialize the app
 function initializeApp() {
     loadUserProgress();
+    loadUserNotes(); // Load notes from localStorage
     populateGroupDropdown();
     displayWords(currentGroup);
     updateGroupStats(); // Add statistics display
     createTouchControls(); // Add touch-friendly controls
     setupEventListeners();
+}
+
+// Load user notes from local storage
+function loadUserNotes() {
+    const savedNotes = localStorage.getItem("greWordNotes");
+    if (savedNotes) {
+        userNotes = JSON.parse(savedNotes);
+    }
+}
+
+// Save user notes to local storage
+function saveUserNotes() {
+    localStorage.setItem("greWordNotes", JSON.stringify(userNotes));
 }
 
 // Create touch-friendly controls for mobile/tablet users
@@ -204,16 +219,37 @@ function displayWords(group) {
         wordText.className = "word-text";
         wordText.textContent = wordObj.word;
 
+        // Add note indicator dot if word has notes
+        if (hasNotes(wordGroup, wordObj.word)) {
+            const noteDot = document.createElement("span");
+            noteDot.className = "note-indicator";
+            wordText.appendChild(noteDot);
+        }
+
         wordCard.appendChild(wordText);
 
-        // Add event listeners to word card
-        wordCard.addEventListener("click", () => {
-            selectWord(index);
-            showWordDetails(wordObj);
+        // Single event listener for clicks with special logic
+        wordCard.addEventListener("click", function (event) {
+            // If the word is already selected, show details on single click
+            if (selectedWordIndex === index) {
+                showWordDetails(wordObj);
+            } else {
+                // If word is not selected, select it
+                selectWord(index);
+            }
         });
 
         wordContainer.appendChild(wordCard);
     });
+}
+
+// Check if a word has notes
+function hasNotes(group, word) {
+    return (
+        userNotes[group] &&
+        userNotes[group][word] &&
+        userNotes[group][word].trim() !== ""
+    );
 }
 
 // Select a word and make it active
@@ -260,6 +296,18 @@ function showWordDetails(wordObj) {
         modalControls.id = "modalControls";
         modalControls.className = "modal-controls";
 
+        // Create navigation buttons as part of the controls (to keep them in the same row)
+        const prevBtn = document.createElement("button");
+        prevBtn.className = "modal-btn nav-btn prev-btn";
+        prevBtn.innerHTML = "&larr;";
+        prevBtn.addEventListener("click", () => {
+            if (selectedWordIndex > 0) {
+                const newIndex = selectedWordIndex - 1;
+                selectWord(newIndex);
+                showWordDetails(currentWords[newIndex]);
+            }
+        });
+
         // Create marking buttons - simplified to just letters
         const markingButtons = [
             { key: "G", class: "green-btn", action: "green" },
@@ -268,6 +316,10 @@ function showWordDetails(wordObj) {
             { key: "S", class: "speak-btn", action: "speak" },
         ];
 
+        // Add previous button first
+        modalControls.appendChild(prevBtn);
+
+        // Add the other action buttons
         markingButtons.forEach((button) => {
             const btn = document.createElement("button");
             btn.className = `modal-btn ${button.class}`;
@@ -278,19 +330,122 @@ function showWordDetails(wordObj) {
             } else {
                 btn.addEventListener("click", () => {
                     markWord(button.action);
-                    // Optional: close the modal after marking
-                    // modal.style.display = 'none';
                 });
             }
 
             modalControls.appendChild(btn);
         });
 
+        // Next word button
+        const nextBtn = document.createElement("button");
+        nextBtn.className = "modal-btn nav-btn next-btn";
+        nextBtn.innerHTML = "&rarr;";
+        nextBtn.addEventListener("click", () => {
+            if (selectedWordIndex < currentWords.length - 1) {
+                const newIndex = selectedWordIndex + 1;
+                selectWord(newIndex);
+                showWordDetails(currentWords[newIndex]);
+            }
+        });
+
+        // Add next button at the end
+        modalControls.appendChild(nextBtn);
+
         // Add to modal content
         document.querySelector(".modal-content").appendChild(modalControls);
     }
 
+    // Feature #2: Add notes section
+    let notesSection = document.getElementById("modalNotes");
+    if (!notesSection) {
+        notesSection = document.createElement("div");
+        notesSection.id = "modalNotes";
+        notesSection.className = "modal-notes";
+
+        const notesTitle = document.createElement("h3");
+        notesTitle.textContent = "Your Notes:";
+
+        const notesTextarea = document.createElement("textarea");
+        notesTextarea.id = "userNotesInput";
+        notesTextarea.className = "user-notes-input";
+        notesTextarea.placeholder =
+            "Add your personal notes about this word here...";
+
+        notesSection.appendChild(notesTitle);
+        notesSection.appendChild(notesTextarea);
+
+        // Add to modal content
+        document.querySelector(".modal-content").appendChild(notesSection);
+    }
+
+    // Get the correct group for this word
+    const wordGroup =
+        document.querySelector(`.word-card[data-index="${selectedWordIndex}"]`)
+            ?.dataset.group || currentGroup;
+    const wordText = wordObj.word;
+
+    // Update the notes textarea with any existing notes
+    const notesTextarea = document.getElementById("userNotesInput");
+    if (userNotes[wordGroup] && userNotes[wordGroup][wordText]) {
+        notesTextarea.value = userNotes[wordGroup][wordText];
+    } else {
+        notesTextarea.value = "";
+    }
+
+    // Remove any existing event listeners to prevent multiple listeners
+    const newTextarea = notesTextarea.cloneNode(true);
+    notesTextarea.parentNode.replaceChild(newTextarea, notesTextarea);
+
+    // Add fresh event listener
+    newTextarea.addEventListener("input", () => {
+        // Store current word and group for closure
+        const currentWordText = wordObj.word;
+        const currentWordGroup = wordGroup;
+
+        // Initialize objects for group and word if they don't exist
+        if (!userNotes[currentWordGroup]) {
+            userNotes[currentWordGroup] = {};
+        }
+
+        // Save the note text
+        userNotes[currentWordGroup][currentWordText] = newTextarea.value;
+        saveUserNotes();
+
+        // Update the note indicator dot
+        updateNoteIndicator(currentWordGroup, currentWordText, newTextarea.value);
+    });
+
     modal.style.display = "block";
+}
+
+// Update the note indicator for a word
+function updateNoteIndicator(group, word, noteText) {
+    // Find the word card for this word
+    const wordCards = document.querySelectorAll(
+        `.word-card[data-word="${word}"][data-group="${group}"]`
+    );
+
+    wordCards.forEach((card) => {
+        // Check if the note is empty or not
+        const hasNote = noteText && noteText.trim() !== "";
+
+        // Find existing dot or create a new one if needed
+        let noteDot = card.querySelector(".note-indicator");
+
+        if (hasNote) {
+            // Add dot if it doesn't exist
+            if (!noteDot) {
+                noteDot = document.createElement("span");
+                noteDot.className = "note-indicator";
+                card.querySelector(".word-text").appendChild(noteDot);
+            }
+        } else {
+            // Remove dot if it exists and note is empty
+            if (noteDot) {
+                noteDot.remove();
+            }
+        }
+    });
 }
 
 // Mark a word with a specific status
@@ -337,33 +492,33 @@ function speakWord() {
 
 // Shuffle words within the current group
 function shuffleCurrentGroup() {
+    // Feature #5: Shuffle all words in the current view (single group or mixed groups)
     currentWords = [...currentWords].sort(() => Math.random() - 0.5);
-    inMixedMode = false;
     displayWords(currentGroup);
     updateGroupStats(); // Update statistics after shuffling
 }
 
-// Shuffle words across multiple groups
-function shuffleMultipleGroups() {
+// Feature #4: Bring multiple groups together sequentially instead of shuffling
+function bringMultipleGroups() {
     // Find the current group index
     const currentGroupIndex = groups.indexOf(currentGroup);
     let allWords = [];
 
-    // Collect words from groups up to the current one
+    // Collect words from groups up to the current one SEQUENTIALLY (not shuffled)
     for (let i = 0; i <= currentGroupIndex; i++) {
         allWords = allWords.concat(wordData[groups[i]]);
     }
 
-    // Shuffle all words
-    currentWords = [...allWords].sort(() => Math.random() - 0.5);
+    // Set the current words to all collected words (without shuffling)
+    currentWords = [...allWords];
 
     // Set mixed mode flag
     inMixedMode = true;
 
-    // Update UI to show we're in a special shuffle mode
-    groupSelector.textContent = `Mixed: Groups 1-${currentGroupIndex + 1}`;
+    // Update UI to show we're in a special mode
+    groupSelector.textContent = `Groups 1-${currentGroupIndex + 1}`;
 
-    // Display the shuffled words
+    // Display the words
     displayWords(currentGroup);
 
     // Update stats for mixed mode
@@ -372,8 +527,22 @@ function shuffleMultipleGroups() {
 
 // Reset the shuffle and go back to original order
 function resetShuffle() {
-    currentWords = [...wordData[currentGroup]];
-    inMixedMode = false;
+    // Feature #6: Reset to original order (either single group or sequential mixed groups)
+    if (inMixedMode) {
+        // If in mixed mode, collect words from all groups up to current one in order
+        const currentGroupIndex = groups.indexOf(currentGroup);
+        let allWords = [];
+
+        for (let i = 0; i <= currentGroupIndex; i++) {
+            allWords = allWords.concat(wordData[groups[i]]);
+        }
+
+        currentWords = [...allWords];
+    } else {
+        // If not in mixed mode, just reset the current group
+        currentWords = [...wordData[currentGroup]];
+    }
+
     displayWords(currentGroup);
     updateGroupStats(); // Update statistics after reset
 }
@@ -429,7 +598,7 @@ function navigatePrevious() {
     }
 }
 
-// Calculate and display group statistics
+// Calculate and display group statistics - Fixed Bug #1 and #2
 function updateGroupStats() {
     // First check if stats element exists, if not create it
     let statsElement = document.getElementById("groupStats");
@@ -447,68 +616,32 @@ function updateGroupStats() {
     }
 
     // Initialize stats object
-    const stats = { green: 0, red: 0, white: 0 };
+    const stats = { green: 0, red: 0, white: 0, total: 0 };
 
-    if (inMixedMode) {
-        // For mixed mode, count across all relevant groups
-        const currentGroupIndex = groups.indexOf(currentGroup);
+    // Bug fix #1 & #2: Count stats properly based on word cards currently displayed
+    // Instead of trying to track groups, just count what's visible in the UI
+    const wordCards = document.querySelectorAll(".word-card");
 
-        // Get all unique words in the current display
-        const uniqueWords = new Set();
-        currentWords.forEach((word) => uniqueWords.add(word.word));
+    // Count total words displayed (fix for Bug #2)
+    stats.total = wordCards.length;
 
-        // Count the statistics for these words from their respective groups
-        uniqueWords.forEach((wordText) => {
-            let wordGroup = null;
-
-            // Find which group this word belongs to
-            for (let i = 0; i <= currentGroupIndex; i++) {
-                const group = groups[i];
-                if (wordData[group].some((w) => w.word === wordText)) {
-                    wordGroup = group;
-                    break;
-                }
-            }
-
-            if (
-                wordGroup &&
-                userProgress[wordGroup] &&
-                userProgress[wordGroup][wordText]
-            ) {
-                const status = userProgress[wordGroup][wordText].status || "white";
-                stats[status]++;
-            } else {
-                stats.white++; // Default to white if no status is found
-            }
-        });
-    } else {
-        // For single group mode, just count that group
-        if (userProgress[currentGroup]) {
-            // Get all words in the current group
-            const groupWords = wordData[currentGroup].map((word) => word.word);
-
-            // Count status for each word
-            groupWords.forEach((wordText) => {
-                if (userProgress[currentGroup][wordText]) {
-                    const status = userProgress[currentGroup][wordText].status || "white";
-                    stats[status]++;
-                } else {
-                    stats.white++; // Default to white if no status is found
-                }
-            });
+    // Count status for each displayed word
+    wordCards.forEach((card) => {
+        if (card.classList.contains("green")) {
+            stats.green++;
+        } else if (card.classList.contains("red")) {
+            stats.red++;
         } else {
-            // If no user progress for this group, all words are white
-            stats.white = wordData[currentGroup].length;
+            stats.white++;
         }
-    }
+    });
 
     // Create stats HTML
     statsElement.innerHTML = `
         <div class="stat-item green-stat">Known: ${stats.green}</div>
         <div class="stat-item red-stat">Learning: ${stats.red}</div>
         <div class="stat-item white-stat">New: ${stats.white}</div>
-        <div class="stat-item total-stat">Total: ${stats.green + stats.red + stats.white
-        }</div>
+        <div class="stat-item total-stat">Total: ${stats.total}</div>
     `;
 }
 
@@ -531,9 +664,12 @@ function setupEventListeners() {
     document
         .getElementById("shuffleGroup")
         .addEventListener("click", shuffleCurrentGroup);
-    document
-        .getElementById("shuffleMultiple")
-        .addEventListener("click", shuffleMultipleGroups);
+
+    // Feature #4: Change "Shuffle Multiple Groups" to "Bring Multiple Groups"
+    const shuffleMultipleBtn = document.getElementById("shuffleMultiple");
+    shuffleMultipleBtn.textContent = "Bring Multiple Groups";
+    shuffleMultipleBtn.addEventListener("click", bringMultipleGroups);
+
     document
         .getElementById("resetShuffle")
         .addEventListener("click", resetShuffle);

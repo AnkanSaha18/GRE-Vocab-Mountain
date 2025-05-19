@@ -246,6 +246,20 @@ button:hover {
     font-size: 18px;
     font-weight: 600;
     margin-bottom: 5px;
+    position: relative;
+    display: inline-block;
+}
+
+/* Note indicator dot */
+.note-indicator {
+    position: absolute;
+    top: 1px;
+    right: -10px;
+    width: 8px;
+    height: 8px;
+    background-color: #e74c3c;
+    border-radius: 50%;
+    display: inline-block;
 }
 
 /* Enhanced Modal Styles */
@@ -260,25 +274,34 @@ button:hover {
     background-color: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(3px);
     transition: all 0.3s ease;
+    overflow-y: auto;
+    /* Allow modal to scroll if needed */
 }
 
 .modal-content {
     background: linear-gradient(to bottom, #ffffff, #f9f9f9);
-    margin: 8% auto;
-    padding: 30px;
+    margin: 5% auto;
+    /* Reduced from 8% to 5% */
+    padding: 25px;
     border-radius: 12px;
-    width: 85%;
-    max-width: 600px;
+    width: 90%;
+    /* Reduced from 85% */
+    max-width: 500px;
+    /* Reduced from 600px */
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     position: relative;
     transition: all 0.3s ease;
     border: 1px solid #eaeaea;
+    max-height: 90vh;
+    /* Limit height to 90% of viewport height */
+    overflow-y: auto;
+    /* Allow scrolling within modal if content is tall */
 }
 
 .close {
     position: absolute;
-    right: 20px;
-    top: 15px;
+    right: 15px;
+    top: 10px;
     color: #999;
     font-size: 24px;
     font-weight: bold;
@@ -289,6 +312,7 @@ button:hover {
     line-height: 30px;
     text-align: center;
     border-radius: 50%;
+    z-index: 10;
 }
 
 .close:hover {
@@ -298,54 +322,71 @@ button:hover {
 
 #modalWord {
     color: #2c3e50;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
+    /* Reduced from 20px */
     border-bottom: 2px solid #eee;
-    padding-bottom: 15px;
-    font-size: 28px;
+    padding-bottom: 10px;
+    /* Reduced from 15px */
+    font-size: 26px;
+    /* Reduced from 28px */
     font-weight: 700;
     text-align: center;
 }
 
 #modalDefinition {
-    margin-bottom: 20px;
-    font-size: 16px;
-    line-height: 1.6;
+    margin-bottom: 15px;
+    /* Reduced from 20px */
+    font-size: 15px;
+    /* Reduced from 16px */
+    line-height: 1.5;
     color: #333;
 }
 
 #modalExample {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
+    /* Reduced from 20px */
     font-style: italic;
     color: #555;
-    padding: 15px;
+    padding: 12px;
+    /* Reduced from 15px */
     background-color: #f8f8f8;
     border-radius: 8px;
     border-left: 4px solid #3498db;
     line-height: 1.5;
+    font-size: 14px;
+    /* Added smaller font */
 }
 
 #modalSynonyms {
     color: #666;
-    margin-bottom: 25px;
-    font-size: 15px;
+    margin-bottom: 20px;
+    /* Reduced from 25px */
+    font-size: 14px;
+    /* Reduced from 15px */
 }
 
 /* Modal Controls Styles */
 .modal-controls {
     display: flex;
     justify-content: center;
-    gap: 15px;
-    margin-top: 25px;
-    padding-top: 20px;
+    gap: 10px;
+    /* Reduced from 15px */
+    margin-top: 20px;
+    /* Reduced from 25px */
+    padding-top: 15px;
+    /* Reduced from 20px */
     border-top: 1px solid #eee;
 }
 
 .modal-btn {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    /* Reduced from 50px */
+    height: 40px;
+    /* Reduced from 50px */
     border: none;
     border-radius: 50%;
-    font-size: 20px;
+    font-size: 16px;
+    /* Reduced from 20px */
     font-weight: bold;
     color: white;
     cursor: pointer;
@@ -380,6 +421,13 @@ button:hover {
 
 .modal-btn.speak-btn {
     background: linear-gradient(to bottom right, #9b59b6, #8e44ad);
+}
+
+.modal-btn.nav-btn {
+    background: linear-gradient(to bottom right, #4392e0, #4392e0);
+    font-size: 18px;
+    border-radius: 5%;
+    /* Slightly bigger font for navigation arrows */
 }
 
 /* Touch Controls Styles */
@@ -456,6 +504,47 @@ button:hover {
     flex: 1;
 }
 
+/* Notes Section Styles */
+.modal-notes {
+    margin-top: 15px;
+    /* Reduced from 20px */
+    padding-top: 12px;
+    /* Reduced from 15px */
+    border-top: 1px solid #eee;
+}
+
+.modal-notes h3 {
+    margin-bottom: 8px;
+    /* Reduced from 10px */
+    color: #2c3e50;
+    font-size: 16px;
+    /* Reduced from 18px */
+}
+
+.user-notes-input {
+    width: 100%;
+    min-height: 80px;
+    /* Reduced from 100px */
+    padding: 8px;
+    /* Reduced from 10px */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    resize: vertical;
+    font-family: inherit;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+.user-notes-input:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+}
+
+.user-notes-input::placeholder {
+    color: #aaa;
+}
+
 /* Responsive Styles */
 @media (max-width: 768px) {
     .controls {
@@ -475,16 +564,18 @@ button:hover {
     .modal-content {
         padding: 20px;
         margin: 10% auto;
+        width: 95%;
     }
 
     #modalWord {
-        font-size: 24px;
+        font-size: 22px;
     }
 
     .modal-btn {
-        width: 45px;
-        height: 45px;
-        font-size: 18px;
+        width: 36px;
+        /* Further reduced for mobile */
+        height: 36px;
+        font-size: 14px;
     }
 
     .group-stats {
@@ -540,27 +631,28 @@ button:hover {
     }
 
     .modal-content {
-        width: 90%;
+        width: 95%;
         padding: 15px;
-        margin: 15% auto;
+        margin: 8% auto;
     }
 
     #modalWord {
-        font-size: 22px;
-        margin-bottom: 15px;
+        font-size: 20px;
+        margin-bottom: 12px;
     }
 
     #modalDefinition,
     #modalExample,
     #modalSynonyms {
-        font-size: 14px;
-        margin-bottom: 15px;
+        font-size: 13px;
+        margin-bottom: 12px;
     }
 
     .modal-btn {
-        width: 40px;
-        height: 40px;
-        font-size: 16px;
+        width: 32px;
+        /* Even smaller for small phones */
+        height: 32px;
+        font-size: 12px;
     }
 
     .stat-item {
@@ -590,5 +682,45 @@ button:hover {
 
     .next-btn {
         order: 10;
+    }
+
+    .user-notes-input {
+        min-height: 60px;
+    }
+}
+
+/* Update buttons style for better visibility */
+#shuffleMultiple {
+    background-color: #3498db;
+}
+
+#shuffleMultiple:hover {
+    background-color: #2980b9;
+}
+
+/* Word Card Double-Click Enhancement */
+.word-card.selected.double-click {
+    animation: double-pulse 0.4s ease;
+}
+
+@keyframes double-pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    25% {
+        transform: scale(1.1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    75% {
+        transform: scale(1.07);
+    }
+
+    100% {
+        transform: scale(1.05);
     }
 }
